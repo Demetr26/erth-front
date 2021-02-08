@@ -1,16 +1,46 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {dateRange} from "../../utils";
 import DateComponent from "./dateComponent";
+import History from "../History";
+import {useDispatch, useSelector} from "react-redux";
+import {changeFormParams} from "./redux/actions";
+import PackageComponent from "./packageComponent";
+import CategoryComponent from "./categoryComponent";
+import GenreComponent from "./genreComponent";
 
 const SearchForm = (props) => {
     const datesBefore = dateRange(-3);
     const datesAfter = dateRange(3);
     const today = new Date().toISOString().slice(0,10)
+    const isNow = false
+    const isToday = false
+    const dispatch = useDispatch()
+    const storeForm = useSelector( state => state.form)
+    const [form, setForm] = useState(storeForm.params)
+
+    const handleSubmit = e => {
+        e.preventDefault()
+    }
+
+    const handleChangeDate = e => {
+       const date = e.target.getAttribute('data-date')
+       const period = e.target.getAttribute('data-period')
+       History.push('/?date='+date+'&period='+period)
+       setForm({date: date, period: period})
+       dispatch(changeFormParams({date: date, period: period}))
+    }
+
+    const handleChangeParam = e => {
+        const name = e.target.name
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+        setForm({...form, [name]: value})
+        dispatch(changeFormParams({[name]:value}))
+    }
 
     return (
         <>
             <h2>Телепрограмма</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="row mb-2">
                     <div className="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                         <input type="text" name="textSearch" id="search-text" placeholder="Поиск по телепрограмме"
@@ -18,38 +48,22 @@ const SearchForm = (props) => {
                     </div>
                     <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <div className="form-check form-switch">
-                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
-                            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Только
-                                HD-каналы</label>
+                            <input className="form-check-input" type="checkbox" checked={form.is_hd} name="is_hd" id="flexSwitchCheckDefault" onChange={handleChangeParam}/>
+                            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Только HD-каналы</label>
                         </div>
                     </div>
                 </div>
                 <div className='row mb-2'>
                     <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <select name='package' id='package' className='form-select'>
-                            <option key="0" value="">Пакеты каналов</option>
-                            <option key="1" value="1">Коммутатор</option>
-                            <option key="2" value="2">Конвертер</option>
-                            <option key="3" value="3">Wifi</option>
-                        </select>
+                        <PackageComponent />
                     </div>
                     <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <select name='categories' id='categories' className='form-select'>
-                            <option key="0" value="">Категории каналов</option>
-                            <option key="1" value="1">Коммутатор</option>
-                            <option key="2" value="2">Конвертер</option>
-                            <option key="3" value="3">Wifi</option>
-                        </select>
+                        <CategoryComponent />
                     </div>
                     <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <div className='row'>
                             <div className="col-sm-12 col-md-10 col-lg-10 col-xl-10">
-                                <select name='genres' id='genres' className='form-select'>
-                                    <option key="0" value="">Жанры передач</option>
-                                    <option key="1" value="1">Коммутатор</option>
-                                    <option key="2" value="2">Конвертер</option>
-                                    <option key="3" value="3">Wifi</option>
-                                </select>
+                                <GenreComponent />
                             </div>
                             <div className="col-sm-12 col-md-2 col-lg-2 col-xl-2">
                                 <button type="button" className="btn btn-light"><i className="bi bi-x-circle-fill"/>
@@ -62,12 +76,14 @@ const SearchForm = (props) => {
                 <div className='row mb-2'>
                     <div className="d-grid gap-2 d-md-block">
                         {datesBefore.map( date => {
-                            return <DateComponent key={date.long} short={date.short} long={date.long} />;
+                            let active = date.long === form.date
+                            return <DateComponent key={date.long} active={active} period="allDay" short={date.short} long={date.long} onClick={handleChangeDate} />;
                         })}
-                        <button type="button" data-date="now" className="btn btn-link">Сейчас</button>
-                        <button type="button" data-date={today} className="btn btn-link">Сегодня</button>
+                        <button type="button" data-date={today} data-period="now" className="btn btn-link" onClick={handleChangeDate}>Сейчас</button>
+                        <button type="button" data-date={today} data-period="allDay" className="btn btn-link" onClick={handleChangeDate}>Сегодня</button>
                         {datesAfter.map( date => {
-                            return <DateComponent key={date.long} short={date.short} long={date.long} />;
+                            let active = date.long === form.date
+                            return <DateComponent key={date.long} active={active} period="allDay" short={date.short} long={date.long} onClick={handleChangeDate} />;
                         })}
                     </div>
                 </div>
