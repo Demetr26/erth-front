@@ -29,6 +29,7 @@ const SearchForm = (props) => {
         e.preventDefault()
     }
 
+    // code splitting coming soon...
     const handleChangeDate = e => {
        const date = e.target.getAttribute('data-date')
        const period = e.target.getAttribute('data-period')
