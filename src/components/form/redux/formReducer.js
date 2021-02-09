@@ -10,7 +10,10 @@ const initialState = {
     params: {
         is_hd: false,
         date: '',
-        period: 'allDay'
+        period: 'allDay',
+        genres: [],
+        categories: [],
+        packages: []
     },
     packages: [],
     categories: [],

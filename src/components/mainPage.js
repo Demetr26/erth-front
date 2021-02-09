@@ -4,7 +4,7 @@ import Schedule from "./schedule/schedule";
 
 const MainPage = (props) => (
     <div className='container'>
-        <SearchForm />
+        <SearchForm {...props}/>
         <Schedule />
     </div>
 );

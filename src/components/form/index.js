@@ -7,6 +7,7 @@ import {changeFormParams} from "./redux/actions";
 import PackageComponent from "./packageComponent";
 import CategoryComponent from "./categoryComponent";
 import GenreComponent from "./genreComponent";
+import {useLocation,useHistory} from 'react-router-dom'
 
 const SearchForm = (props) => {
     const datesBefore = dateRange(-3);
@@ -17,6 +18,8 @@ const SearchForm = (props) => {
     const dispatch = useDispatch()
     const storeForm = useSelector( state => state.form)
     const [form, setForm] = useState(storeForm.params)
+    const location = useLocation()
+    const history = useHistory()
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -25,8 +28,11 @@ const SearchForm = (props) => {
     const handleChangeDate = e => {
        const date = e.target.getAttribute('data-date')
        const period = e.target.getAttribute('data-period')
-       History.push('/?date='+date+'&period='+period)
-       setForm({date: date, period: period})
+       const params = new URLSearchParams(location.search);
+       params.set('date', date)
+       params.set('period', period)
+       history.push('?'+params.toString())
+       setForm({...form, date: date, period: period})
        dispatch(changeFormParams({date: date, period: period}))
     }
 

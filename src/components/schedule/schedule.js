@@ -12,7 +12,7 @@ const Schedule = (props) => {
 
     useEffect(() => {
         dispatch(loadSchedule(searchForm))
-    },[searchForm.date])
+    },[searchForm.date, searchForm.categories, searchForm.packages])
 
     useEffect(() => {
         let sh = schedule
