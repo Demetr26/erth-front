@@ -105,8 +105,8 @@ const SearchForm = (props) => {
                                                   onClick={handleChangeDate}
                                     />;
                         })}
-                        <button type="button" data-date={today} data-period="now" className="btn btn-link schedule__timeline__item active" onClick={handleChangeDate}>Сейчас</button>
-                        <button type="button" data-date={today} data-period="allDay" className="btn btn-link schedule__timeline__item" onClick={handleChangeDate}>Сегодня</button>
+                        <button type="button" data-date={today} data-period="now" className={"btn btn-link schedule__timeline__item"+((form.date === today && form.period === 'now') ? ' active' : '')} onClick={handleChangeDate}>Сейчас</button>
+                        <button type="button" data-date={today} data-period="allDay" className={"btn btn-link schedule__timeline__item"+((form.date === today && form.period === 'allDay') ? ' active' : '')} onClick={handleChangeDate}>Сегодня</button>
                         {datesAfter.map( date => {
                             let active = date.long === form.date
                             return <DateComponent key={date.long}
