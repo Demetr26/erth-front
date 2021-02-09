@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {loadSchedule} from "./redux/actions";
 import ScheduleItem from "./scheduleItem";
@@ -10,11 +10,11 @@ const Schedule = (props) => {
     const errorBlock = !has_error ? ' d-none' : '';
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    useMemo(() => {
         dispatch(loadSchedule(searchForm))
     },[searchForm.date, searchForm.categories, searchForm.packages])
 
-    useEffect(() => {
+    useMemo(() => {
         let sh = schedule
         if(searchForm.is_hd)
             sh = sh.filter( item => item.is_hd === '1')

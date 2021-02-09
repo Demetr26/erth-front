@@ -1,0 +1,84 @@
+/* bootstrap customization */
+.form-check-input:checked{
+    background-color: #00993B;
+    border-color: #00993B;
+}
+
+.schedule__items{
+    position: relative;
+    cursor: pointer;
+}
+.schedule__items__full-block.active{
+    display: block;
+}
+
+.schedule__items__full-block{
+    position: absolute;
+    z-index: 9000;
+    background-color: #fff;
+    border: 1px solid black;
+}
+.schedule__items__full-block__wrapper{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+.schedule__items__full-block__close{
+    background-color: red;
+}
+
+input.icon-left{
+    padding-left: 30px;
+}
+
+input.icon-left{
+    padding-right: 30px;
+}
+
+.input__left-icon{
+    position: absolute;
+    padding: .25rem .375rem;
+}
+
+.input__right-icon{
+    position: absolute;
+    right: 5px;
+    top: 0;
+    padding: .25rem .375rem;
+    cursor: pointer;
+}
+
+#search-text{
+    border-radius: 0!important;
+}
+
+.multi-select {
+    --rmsc-main: #4285f4;
+    --rmsc-hover: #f1f3f5;
+    --rmsc-selected: #e2e6ea;
+    --rmsc-border: #ccc;
+    --rmsc-gray: #000!important;
+    --rmsc-bg: #fff;
+    --rmsc-p: 10px; /* Spacing */
+    --rmsc-radius: 0px!important; /* Radius */
+    --rmsc-h: 38px; /* Height */
+}
+
+/* schedule timeline*/
+.schedule__timeline{}
+.schedule__timeline__item{
+    color: #000;
+    text-decoration-style: dashed;
+    font-size: 18px;
+}
+.schedule__timeline__item.active{
+    background-color: #ED1C24;
+    color: #fff;
+    text-decoration: none;
+}
+.schedule__timeline__item-past{
+    opacity: 0.4;
+    color: #000;
+    text-decoration-style: dashed;
+    font-size: 1.25rem;
+}
+

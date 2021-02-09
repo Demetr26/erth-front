@@ -8,6 +8,7 @@ import {
 
 const initialState = {
     params: {
+        q: '',
         is_hd: false,
         date: '',
         period: 'allDay',
