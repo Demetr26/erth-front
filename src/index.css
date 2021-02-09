@@ -79,6 +79,7 @@ input.icon-left{
     background-color: #ED1C24;
     color: #fff;
     text-decoration: none;
+    opacity: 1;
 }
 .schedule__timeline__item-past{
     opacity: 0.4;
