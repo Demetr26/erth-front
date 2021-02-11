@@ -1,4 +1,5 @@
 import {FORM_CHANGE_PARAM, FORM_LOAD_CATEGORIES, FORM_LOAD_GENRES, FORM_LOAD_PACKAGES} from "../../../redux/types";
+import appConfig from "../../../../config";
 
 export function changeFormParams( params ){
     return {
@@ -9,7 +10,7 @@ export function changeFormParams( params ){
 
 export function loadPackages(){
     return async dispatch => {
-        const data = await fetch('http://localhost:8010/api/packages')
+        const data = await fetch(appConfig.apiHost+'/api/packages')
         const json = await data.json()
         console.log(json)
         dispatch({
@@ -21,7 +22,7 @@ export function loadPackages(){
 
 export function loadCategories(){
     return async dispatch => {
-        const data = await fetch('http://localhost:8010/api/categories')
+        const data = await fetch(appConfig.apiHost+'/api/categories')
         const json = await data.json()
         console.log(json)
         dispatch({
@@ -33,7 +34,7 @@ export function loadCategories(){
 
 export function loadGenres(){
     return async dispatch => {
-        const data = await fetch('http://localhost:8010/api/genres')
+        const data = await fetch(appConfig.apiHost+'/api/genres')
         const json = await data.json()
         console.log(json)
         dispatch({
