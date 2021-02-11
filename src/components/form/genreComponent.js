@@ -22,7 +22,11 @@ const GenreComponent = () => {
     },[])
 
     useEffect(() => {
-        setOptions(genres.map( item => ({label: item.title, value: item.id})))
+        setOptions(genres.map( item => ({
+            label: item.title,
+            value: item.id,
+            color: item.color,
+        })))
     },[genres])
 
     const handleChangeParam = values => {
@@ -44,8 +48,41 @@ const GenreComponent = () => {
             labelledBy={"Select"}
             disableSearch={"true"}
             overrideStrings={i18n}
+            ItemRenderer={({
+                checked,
+                option,
+                onClick,
+                disabled,
+            }) => (
+                <div className={"item-renderer" + (disabled && " disabled")} >
+                    <input
+                        type="checkbox"
+                        onChange={onClick}
+                        checked={checked}
+                        tabIndex={-1}
+                        disabled={disabled}
+                        style={{verticalAlign: 'center', margin: '0'}}
+                    />
+                    <span style={{
+                        display: 'inline-block',
+                        paddingLeft: '5px',
+                        verticalAlign: 'center',
+                        margin: '0'
+                    }}>
+                        {option.label} {option.value !== '' && <i className="bi bi-square-fill" style={{color: option.color}} />}
+                    </span>
+                </div>
+            )}
+            valueRenderer = {(selected, _options) => {
+                return selected.length
+                ? selected.map(({ label, color }) => {
+                    return <span className="ms-1"> {label} <i className="bi bi-square-fill" style={{color: color}} /></span>
+                        })
+                : "Жанры передач";
+                }
+            }
         />
     )
-};
+}
 
 export default GenreComponent;

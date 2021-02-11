@@ -1,32 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {dateRange} from "../../utils";
 import DateComponent from "./dateComponent";
 import History from "../History";
 import {useDispatch, useSelector} from "react-redux";
-import {changeFormParams} from "./redux/actions";
+import {changeFormParams, clearFormData} from "./redux/actions";
 import PackageComponent from "./packageComponent";
 import CategoryComponent from "./categoryComponent";
 import GenreComponent from "./genreComponent";
 import {useLocation,useHistory} from 'react-router-dom'
+import {getInitialState} from "react-bootstrap-typeahead/lib/core/Typeahead";
 
 const SearchForm = (props) => {
     const datesBefore = dateRange(-3);
     const datesAfter = dateRange(3);
     const today = new Date().toISOString().slice(0,10)
-    const isNow = false
-    const isToday = false
     const dispatch = useDispatch()
-    const storeForm = useSelector( state => state.form)
-    const [form, setForm] = useState(storeForm.params)
+    const initialState = {
+        q: '',
+        is_hd: false,
+        date: new Date().toISOString().slice(0,10),
+        period: 'now',
+    }
+    const [form, setForm] = useState(initialState)
     const location = useLocation()
     const history = useHistory()
-
-    useEffect(() => {},[])
 
     const handleSubmit = e => {
         e.preventDefault()
     }
 
+    // code splitting coming soon...
     const handleChangeDate = e => {
        const date = e.target.getAttribute('data-date')
        const period = e.target.getAttribute('data-period')
@@ -48,6 +51,17 @@ const SearchForm = (props) => {
         dispatch(changeFormParams({[name]:value}))
     }
 
+    const changeLocalForm = e => {
+        const name = e.target.name
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+        setForm({...form, [name]: value})
+    }
+
+    const clearForm = () => {
+        setForm(initialState)
+        dispatch(clearFormData())
+    }
+
     return (
         <>
             <h2 className="my-4">Телепрограмма</h2>
@@ -56,12 +70,13 @@ const SearchForm = (props) => {
                     <div className="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                         <div className='position-relative'>
                             <i className='bi bi-search input__left-icon'/>
-                            <input type="text" name="q" id="search-text" placeholder="Поиск по телепрограмме"
+                            <input type="text" name="q" value={form.q} id="search-text" placeholder="Поиск по телепрограмме"
                                    className="form-control icon-left icon-right" onKeyPress={(e) => {
                                 if(e.key === 'Enter'){
                                     handleChangeParam(e)
                                 }
-                            }}/>
+                            }}
+                                   onChange={changeLocalForm} />
                             <i className='bi bi-arrow-right-circle input__right-icon' />
                         </div>
                     </div>
@@ -85,7 +100,8 @@ const SearchForm = (props) => {
                                 <GenreComponent />
                             </div>
                             <div className="col-sm-12 col-md-2 col-lg-2 col-xl-2">
-                                <button type="button" className="btn btn-white"><i className="bi bi-x-circle-fill"/>
+                                <button type="button" className="btn btn-white" onClick={clearForm}>
+                                    <i className="bi bi-x-circle-fill"/>
                                 </button>
                             </div>
                         </div>
@@ -105,8 +121,8 @@ const SearchForm = (props) => {
                                                   onClick={handleChangeDate}
                                     />;
                         })}
-                        <button type="button" data-date={today} data-period="now" className="btn btn-link schedule__timeline__item active" onClick={handleChangeDate}>Сейчас</button>
-                        <button type="button" data-date={today} data-period="allDay" className="btn btn-link schedule__timeline__item" onClick={handleChangeDate}>Сегодня</button>
+                        <button type="button" data-date={today} data-period="now" className={"btn btn-link schedule__timeline__item"+((form.date === today && form.period === 'now') ? ' active' : '')} onClick={handleChangeDate}>Сейчас</button>
+                        <button type="button" data-date={today} data-period="allDay" className={"btn btn-link schedule__timeline__item"+((form.date === today && form.period === 'allDay') ? ' active' : '')} onClick={handleChangeDate}>Сегодня</button>
                         {datesAfter.map( date => {
                             let active = date.long === form.date
                             return <DateComponent key={date.long}

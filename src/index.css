@@ -8,22 +8,27 @@
     position: relative;
     cursor: pointer;
 }
+
+.schedule__channel.active{
+    position: absolute;
+    background-color: #fff;
+    z-index: 9000;
+}
+
 .schedule__items__full-block.active{
     display: block;
 }
 
 .schedule__items__full-block{
-    position: absolute;
-    z-index: 9000;
-    background-color: #fff;
-    border: 1px solid black;
+
 }
 .schedule__items__full-block__wrapper{
     max-height: 300px;
     overflow-y: scroll;
 }
 .schedule__items__full-block__close{
-    background-color: red;
+    text-decoration: underline;
+    text-align: center;
 }
 
 input.icon-left{
@@ -74,6 +79,7 @@ input.icon-left{
     background-color: #ED1C24;
     color: #fff;
     text-decoration: none;
+    opacity: 1;
 }
 .schedule__timeline__item-past{
     opacity: 0.4;
@@ -82,3 +88,10 @@ input.icon-left{
     font-size: 1.25rem;
 }
 
+.schedule__channel-logo{
+    width: 30px;
+}
+
+.schedule__channel.active{
+    box-shadow: 0 3px 10px 0 #C6C6C6;
+}

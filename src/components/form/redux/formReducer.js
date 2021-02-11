@@ -10,8 +10,8 @@ const initialState = {
     params: {
         q: '',
         is_hd: false,
-        date: '',
-        period: 'allDay',
+        date: new Date().toISOString().slice(0,10),
+        period: 'now',
         genres: [],
         categories: [],
         packages: []
@@ -32,7 +32,7 @@ export const formReducer = ( state = initialState, action) => {
         case FORM_LOAD_GENRES:
             return {...state, genres: action.payload}
         case FORM_CLEAR_SEARCH:
-            return initialState;
+            return {...state, params: initialState.params};
         default:
             return state;
     }

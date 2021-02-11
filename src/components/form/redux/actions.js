@@ -1,4 +1,10 @@
-import {FORM_CHANGE_PARAM, FORM_LOAD_CATEGORIES, FORM_LOAD_GENRES, FORM_LOAD_PACKAGES} from "../../../redux/types";
+import {
+    FORM_CHANGE_PARAM,
+    FORM_CLEAR_SEARCH,
+    FORM_LOAD_CATEGORIES,
+    FORM_LOAD_GENRES,
+    FORM_LOAD_PACKAGES
+} from "../../../redux/types";
 import appConfig from "../../../../config";
 
 export function changeFormParams( params ){
@@ -41,5 +47,11 @@ export function loadGenres(){
             type: FORM_LOAD_GENRES,
             payload: json.data
         })
+    }
+}
+
+export function clearFormData(){
+    return {
+        type: FORM_CLEAR_SEARCH
     }
 }
